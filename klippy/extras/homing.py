@@ -350,6 +350,7 @@ class Homing:
                         hi.min_home_dist, homing_axes
                     )
                 ):
+                    self._set_current_post_homing(homing_axes)
                     raise self.printer.command_error(
                         "Early homing trigger on second home!"
                     )
