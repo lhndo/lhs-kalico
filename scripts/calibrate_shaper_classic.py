@@ -13,7 +13,7 @@ import numpy as np, matplotlib
 sys.path.append(
     os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "klippy")
 )
-shaper_calibrate = importlib.import_module(".shaper_calibrate", "extras")
+shaper_calibrate = importlib.import_module(".shaper_calibrate", "plugins")
 
 MAX_TITLE_LENGTH = 65
 
@@ -23,7 +23,7 @@ def parse_log(logname):
         for header in f:
             if not header.startswith("#"):
                 break
-        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz"):
+        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz") and not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz"):
             # Raw accelerometer data
             return np.loadtxt(logname, comments="#", delimiter=",")
     # Parse power spectral density data
@@ -48,13 +48,19 @@ def parse_accel_per_hz(logname):
         for header in f:
             if not header.startswith("#"):
                 break
-        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz"):
+        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz") and not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz"):
             return None  # TODO
 
     data = np.loadtxt(
         logname, skiprows=1, comments="#", delimiter=",", max_rows=2
     )
-    return data[0][5].item()
+    # find if data there is valid data
+    if data.shape[0] > 0 and data.shape[1] > 5:
+        return data[0][5].item()
+    # return a dummy array 
+    return np.array([0, 0])
+
+
 
 
 ######################################################################
@@ -294,7 +300,7 @@ def main():
     )
     opts.add_option(
         "--classic",
-        type="int",
+        type="string",
         dest="classic",
         default=None,
         help="classic shaper calibration",
@@ -357,6 +363,11 @@ def main():
     else:
         shapers = options.shapers.lower().split(",")
 
+    if options.classic == "True" or options.classic == "true":
+        classic = True
+    else:
+         classic = None
+
     # Parse data
     datas = [parse_log(fn) for fn in args]
     accels_per_hz = [parse_accel_per_hz(fn) for fn in args]
@@ -372,7 +383,7 @@ def main():
         max_smoothing=options.max_smoothing,
         test_damping_ratios=test_damping_ratios,
         max_freq=max_freq,
-        classic=options.classic,
+        classic=classic,
     )
     if selected_shaper is None:
         return
