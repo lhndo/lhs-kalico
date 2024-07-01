@@ -23,7 +23,7 @@ def parse_log(logname):
         for header in f:
             if not header.startswith("#"):
                 break
-        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz"):
+        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz") and not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz"):
             # Raw accelerometer data
             return np.loadtxt(logname, comments="#", delimiter=",")
     # Parse power spectral density data
@@ -48,13 +48,17 @@ def parse_accel_per_hz(logname):
         for header in f:
             if not header.startswith("#"):
                 break
-        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz"):
+        if not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz,accel_per_hz") and not header.startswith("freq,psd_x,psd_y,psd_z,psd_xyz"):
             return None  # TODO
 
     data = np.loadtxt(
         logname, skiprows=1, comments="#", delimiter=",", max_rows=2
     )
-    return data[0][5].item()
+    # find if data there is valid data
+    if data.shape[0] > 0 and data.shape[1] > 5:
+        return data[0][5].item()
+    # return a dummy array 
+    return np.array([0, 0])
 
 
 ######################################################################
