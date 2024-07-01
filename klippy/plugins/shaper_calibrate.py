@@ -542,13 +542,13 @@ class ShaperCalibrate:
         test_damping_ratios=None,
         max_freq=None,
         logger=None,
-        classic=False
+        classic=None
     ):
         best_shaper = None
         all_shapers = []
         shapers = shapers or AUTOTUNE_SHAPERS
 
-        if classic :
+        if classic is not None :
             est_shaper = estimate_shaper_old
             est_smoother = estimate_smoother_old
         else:
