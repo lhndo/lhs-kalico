@@ -294,9 +294,9 @@ def main():
     )
     opts.add_option(
         "--classic",
-        type="bool",
+        type="int",
         dest="classic",
-        default=False,
+        default=None,
         help="classic shaper calibration",
     )
     options, args = opts.parse_args()
