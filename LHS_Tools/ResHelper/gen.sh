@@ -11,8 +11,8 @@ if [ "$3" -eq 0 ]; then
     # Use default generation
     ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_$1_*.csv -o ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png
 elif [ "$3" -eq 1 ]; then
-    # Use no smooth shapers generation
-    ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_$1_*.csv -o ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png --shapers zv,mzv,ei
+    # Classic klipper generation
+    ~/klipper/scripts/calibrate_shaper_classic.py /tmp/resonances_$1_*.csv -o ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png --shapers zv,mzv,ei --classic true
 else
     # Handle unexpected values of $3
     echo "Invalid value for third argument: $3. Expected 0 or 1."
