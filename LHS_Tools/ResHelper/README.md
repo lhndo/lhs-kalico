@@ -18,7 +18,7 @@ Example: `RESONANCE_TEST_Y ACCEL_PER_HZ=180 DAMPING_RATIO=0 CLASSIC=1`
 * **DR** - (**0**/1) - Default 0 . Enables damping ratio calculation.
   * This procedure is compute intensive and slows down testing. Recommended for final value generation only
 * **CLASSIC** - (0/**1**) - Default 1 
-  * DK BEv2 introduced a new series of algorithms which produce different outputs and recommandations compared to the mainline Klipper implementation and cannot be evaluated against previous known data, This option restores the classic graph generation functionality and it enabled by default.   
+  * DK BEv2 introduced a new series of algorithms which produce different outputs and recommendations compared to the mainline Klipper implementation and cannot be evaluated against previous known data. This option restores the classic graph generation functionality and is enabled by default.   
 
 
 <br>
