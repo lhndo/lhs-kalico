@@ -13,7 +13,13 @@ import numpy as np, matplotlib
 sys.path.append(
     os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "klippy")
 )
-shaper_calibrate = importlib.import_module(".shaper_calibrate", "plugins")
+shaper_calibrate_new = importlib.import_module(".shaper_calibrate", "extras")
+
+shaper_calibrate_old = importlib.import_module(".shaper_calibrate_classic", "plugins")
+
+shaper_calibrate = None
+
+classic = None
 
 MAX_TITLE_LENGTH = 65
 
@@ -104,7 +110,6 @@ def calibrate_shaper(
         test_damping_ratios=test_damping_ratios,
         max_freq=max_freq,
         logger=print,
-        classic=classic,
     )
     if not shaper:
         print(
@@ -363,10 +368,14 @@ def main():
     else:
         shapers = options.shapers.lower().split(",")
 
+    global shaper_calibrate
+
     if options.classic == "True" or options.classic == "true":
         classic = True
+        shaper_calibrate = shaper_calibrate_old
     else:
          classic = None
+         shaper_calibrate = shaper_calibrate_new
 
     # Parse data
     datas = [parse_log(fn) for fn in args]
