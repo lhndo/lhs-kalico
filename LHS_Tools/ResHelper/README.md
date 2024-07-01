@@ -25,7 +25,7 @@ Example: `RESONANCE_TEST_Y ACCEL_PER_HZ=180 DAMPING_RATIO=0 CLASSIC=1`
 
 ## Installation:
 
-#### 1. Download and install ResHelper Scripts 
+#### 1. Install Configuration 
 
 `cd klipper/LHS_Tools/ResHelper`<br>
 `./install.sh`  (or manually copy reshelper_dk.cfg into your printer_data/config folder)
