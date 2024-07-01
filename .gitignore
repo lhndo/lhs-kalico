@@ -11,5 +11,5 @@ ci_cache/
 _test_.*
 klippy/plugins/*
 !klippy/plugins/__init__.py
-!klippy/plugins/shaper_calibrate.py
+!klippy/plugins/shaper_calibrate_classic.py
 .vscode
