@@ -325,8 +325,7 @@ class ShaperCalibrate:
         all_shapers = []
         shapers = shapers or AUTOTUNE_SHAPERS
 
-        gcode = self.printer.lookup_object("gcode")
-        gcode.respond_info("Computing Classic Shapers", log=True)
+        print("Computing Classic Shapers")
 
         for shaper_cfg in shaper_defs.INPUT_SHAPERS:
             if shaper_cfg.name not in shapers:
