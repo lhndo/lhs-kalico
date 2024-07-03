@@ -12,9 +12,11 @@ Throughout the process there is no need to connect to the PI by SSH or SFTP.
 
 ### DK Features
 
-Example: `RESONANCE_TEST_Y ACCEL_PER_HZ=180 DAMPING_RATIO=0 CLASSIC=1`
+Example: `RESONANCE_TEST_Y ACCEL_PER_HZ=180 MIN_FREQ=40 MAX_FREQ=140 DAMPING_RATIO=0 CLASSIC=1`
 
 * **ACCEL_PER_HZ** (0-300..) - Default config value - Sets the accel per hz value
+* **MIN_FREQ** (0-200..) - Default config value - Sets minimum test frequency
+* **MAX_FREQ** (0-200..) - Default config value - Sets maximum test frequency
 * **DR** - (**0**/1) - Default 0 . Enables damping ratio calculation.
   * This procedure is compute intensive and slows down testing. Recommended for final value generation only
 * **CLASSIC** - (0/**1**) - Default 1 
