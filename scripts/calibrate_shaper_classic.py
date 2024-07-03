@@ -373,9 +373,11 @@ def main():
     if options.classic == "True" or options.classic == "true":
         classic = True
         shaper_calibrate = shaper_calibrate_old
+        print("Classic Mode Set...")
     else:
          classic = None
          shaper_calibrate = shaper_calibrate_new
+         print("DK Mode Set...")
 
     # Parse data
     datas = [parse_log(fn) for fn in args]
