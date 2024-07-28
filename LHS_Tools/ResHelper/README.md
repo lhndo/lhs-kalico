@@ -27,35 +27,22 @@ Example: `RESONANCE_TEST_Y ACCEL_PER_HZ=180 MIN_FREQ=40 MAX_FREQ=140 DAMPING_RAT
 
 ## Installation:
 
-#### 1. Install Configuration 
+ResHelper is already included with this branch 
 
-`cd klipper/LHS_Tools/ResHelper`<br>
-`./install.sh`  (or manually copy reshelper_dk.cfg into your printer_data/config folder)
+1. Check your home folder path in **reshelper_dk.cfg**   
+**If your host user name is not "biqu", then you have to change the paths in reshelper_dk.cfg**
 
-<br>
+2. Install the following if you intend to **calculate damping** ratio:
 
-#### 2. Install Rscript (Optional if you want to run damping_ratio calculations )
-
-`sudo apt install r-base`<br>
-`sudo Rscript install_rs_lib.R`
-
-<br> Note: *If the library install fails, try installing a Fortran compiler: `sudo apt-get install gfortran` then rerun `sudo Rscript install_rs_lib.R`*   
-
-<br>
-
-#### 3. Include the configuration file in your printer.cfg
-
-`[include reshelper_dk.cfg]` <br>
-❗**Note: 
-Check your home folder path in **reshelper_dk.cfg**   
-If your host user name is not "biqu", then you have to change the paths in reshelper_dk.cfg**
+```
+cd klipper/LHS_Tools/
+sudo apt install r-base
+sudo Rscript install_rs_lib.R
+```
+Note: *If the library install fails, try installing a Fortran compiler: `sudo apt-get install gfortran` then rerun `sudo Rscript install_rs_lib.R`*   
 
 <br>
 
-#### 6. Restart Klipper
-
-
-<br>
 
 
 
