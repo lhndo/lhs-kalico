@@ -1,8 +1,8 @@
 <p align="center"><a href="https://github.com/lhndo/LH-Stinger/"><img align="center" src="https://github.com/lhndo/LH-Stinger/wiki/Images/LH_Stinger_Logo_512px.png" alt="Danger-Klipper Logo" width=200px></a></p>
 
 
-This branch follows the Danger Klipper BEV2 (Bleeding Edge V2) branch and includes quality of life additions for the LH Stinger
-
+This branch follows the Danger Klipper BEV2 (Bleeding Edge V2) branch and includes quality of life additions for the LH Stinger.  
+No MCU firmware flashing is required.
 
 
 ### Installation
