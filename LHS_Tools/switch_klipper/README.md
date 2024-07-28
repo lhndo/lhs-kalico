@@ -41,12 +41,12 @@ cd ~
 To switch to danger klipper
 
 ```
-sudo ./switch_klipper.dk dk
+sudo ./switch_klipper.sh dk
 ```
 
 To switch to klipper mainline
 
 ```
-sudo ./switch_klipper.dk ml
+sudo ./switch_klipper.sh ml
 ```
 <br>
