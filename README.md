@@ -1,4 +1,48 @@
+<p align="center"><a href="https://github.com/lhndo/LH-Stinger/"><img align="center" src="https://github.com/lhndo/LH-Stinger/wiki/Images/LH_Stinger_Logo_512px.png" alt="Danger-Klipper Logo" width=200px></a></p>
+
+
+This branch follows the Danger Klipper BEV2 (Bleeding Edge V2) branch and includes quality of life additions for the LH Stinger
+
+
+
+### Installation
+
+1. Back up current files:
+
+```bash
+mv ~/klipper ~/klipper_ml
+cp ~/printer_data/config/printer.cfg ~/printer_data/config/printer.cfg.ml 
+```
+
+2. Clone Danger Klipper repo and restart the klipper service:
+
+```bash
+git clone https://github.com/lhndo/danger-klipper.git ~/klipper
+cd klipper
+git checkout bleeding-edge-v2
+sudo systemctl restart klipper
+
+```
+
+### Features
+
+- [LH Stinger DK Configuration](/LHS_Config) (set up for MPC heater control)
+- [ResHelper - DK Edition](/LHS_Tools/ResHelper) (includes ACCEL_PER_HZ option and Classic klipper test mode)
+- [Switch Klipper](/LHS_Tools/switch_klipper) (easy switching between danger klipper and klipper mainline)
+
+
+
+
+<br>
+<br>
+<hr>
+<br>
+<br>
+
 <p align="center"><a href="https://DangerKlippers.github.io/danger-klipper/"><img align="center" src="docs/img/klipper-logo.png" alt="Danger-Klipper Logo"></a></p>
+
+
+
 
 [![Action Status](https://github.com/DangerKlippers/danger-klipper/actions/workflows/ci-build_test.yaml/badge.svg?branch=master)](https://github.com/DangerKlippers/danger-klipper/actions/workflows/ci-build_test.yaml)
 
@@ -124,7 +168,8 @@ and [feature configuration reference](docs/Config_Reference_Bleeding_Edge.md):
 If desired, make a backup copy of your existing Klipper installation by running:
 
 ```bash
-mv ~/klipper ~/klipper_old
+mv ~/klipper ~/klipper_ml
+cp ~/printer_data/config/printer.cfg ~/printer_data/config/printer.cfg.ml 
 ```
 
 Then clone the Danger Klipper repo and restart the klipper service:
