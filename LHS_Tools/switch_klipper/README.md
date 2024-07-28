@@ -27,14 +27,14 @@ cd ~
 
 * Currently running danger klipper, you should have the following:  
 
-> Folders: **klipper/, klipper_dk/**  
-> Files: **printer.cfg, printer.cfg.dk**  
+> Folders: **klipper/, klipper_ml/**  
+> Files: **printer.cfg, printer.cfg.ml**  
 
 
 * Currently running klipper mainline (default):  
 
-> Folders: **klipper/, klipper_ml/**  
-> Files: **printer.cfg, printer.cfg.ml**  
+> Folders: **klipper/, klipper_dk/**  
+> Files: **printer.cfg, printer.cfg.dk**  
 
 ## Usage
 
