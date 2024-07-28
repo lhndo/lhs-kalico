@@ -24,6 +24,18 @@ sudo systemctl restart klipper
 
 ```
 
+3. Copy additional dk configuration files: 
+   *(this will not overwrite your printer.cfg)*
+
+```
+cp -rvi ~/klipper/LHS_Config/* ~/printer_data/config/
+
+```
+
+4. Port the differences from the provided **printer.cfg.dk_ref** to your **printer.cfg**
+
+<br>
+
 ### Features
 
 - [LH Stinger DK Configuration](/LHS_Config) (set up for [MPC heater control](https://github.com/DangerKlippers/danger-klipper/blob/master/docs/MPC.md))
