@@ -26,7 +26,7 @@ sudo systemctl restart klipper
 
 ### Features
 
-- [LH Stinger DK Configuration](/LHS_Config) (set up for MPC heater control)
+- [LH Stinger DK Configuration](/LHS_Config) (set up for [MPC heater control](https://github.com/DangerKlippers/danger-klipper/blob/master/docs/MPC.md))
 - [ResHelper - DK Edition](/LHS_Tools/ResHelper) (includes ACCEL_PER_HZ option and Classic klipper test mode)
 - [Switch Klipper](/LHS_Tools/switch_klipper) (easy switching between danger klipper and klipper mainline)
 
