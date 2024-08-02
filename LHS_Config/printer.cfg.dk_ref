@@ -180,8 +180,11 @@ max_extrude_cross_section: 5
 pressure_advance: 0.02
 pressure_advance_smooth_time: 0.015
 
-# ----- MPC Instructions -----
+# ----- MPC Configuration -----
 ## G-code: MPC_SET HEATER=extruder FILAMENT_DENSITY=1.24 FILAMENT_HEAT_CAPACITY=1.8  ## Optional GCODE Per Filament Properties 
+## https://github.com/DangerKlippers/danger-klipper/blob/master/docs/MPC.md#common-materials
+
+## Calibration:
 ## Uncomment the mpc_calibrate.cfg include at the bottom of printer.cfg to enable calibration with AUX fan 
 
 ## Hotend Calibration:
