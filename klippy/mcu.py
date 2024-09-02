@@ -111,7 +111,7 @@ class CommandWrapper:
         if cmd_queue is None:
             cmd_queue = serial.get_default_command_queue()
         self._cmd_queue = cmd_queue
-        self._msgtag = msgparser.lookup_msgtag(msgformat) & 0xFFFFFFFF
+        self._msgtag = msgparser.lookup_msgid(msgformat) & 0xFFFFFFFF
 
     def send(self, data=(), minclock=0, reqclock=0):
         cmd = self._cmd.encode(data)
@@ -737,6 +737,7 @@ class MCU:
     def __init__(self, config, clocksync):
         self._config = config
         self._printer = printer = config.get_printer()
+        self.danger_options = printer.lookup_object("danger_options")
         self.gcode = printer.lookup_object("gcode")
         self._clocksync = clocksync
         self._reactor = printer.get_reactor()
@@ -767,9 +768,8 @@ class MCU:
         restart_methods = [None, "arduino", "cheetah", "command", "rpi_usb"]
         self._restart_method = "command"
         if self._baud:
-            rmethods = {m: m for m in restart_methods}
             self._restart_method = config.getchoice(
-                "restart_method", rmethods, None
+                "restart_method", restart_methods, None
             )
         self._reset_cmd = self._config_reset_cmd = None
         self._is_mcu_bridge = False
@@ -1134,16 +1134,16 @@ class MCU:
         self._printer.set_rollover_info(self._name, log_info, log=False)
 
     def _check_serial_exists(self):
-
-        if self._canbus_iface is not None:
-            cbid = self._printer.lookup_object("canbus_ids")
-            nodeid = cbid.get_nodeid(self._serialport)
-            return self._serial.check_canbus_connect(
-                self._serialport, nodeid, self._canbus_iface
-            )
-        else:
-            rts = self._restart_method != "cheetah"
-            return self._serial.check_connect(self._serialport, self._baud, rts)
+        # if self._canbus_iface is not None:
+        #     cbid = self._printer.lookup_object("canbus_ids")
+        #     nodeid = cbid.get_nodeid(self._serialport)
+        #     # self._serial.check_canbus_connect is not functional yet
+        #     return self._serial.check_canbus_connect(
+        #         self._serialport, nodeid, self._canbus_iface
+        #     )
+        # else:
+        rts = self._restart_method != "cheetah"
+        return self._serial.check_connect(self._serialport, self._baud, rts)
 
     def _mcu_identify(self):
         if self.is_non_critical and not self._check_serial_exists():

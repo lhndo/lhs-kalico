@@ -7,7 +7,12 @@ import collections
 import os
 import logging
 import threading
-from .control_mpc import ControlMPC
+from .control_mpc import (
+    ControlMPC,
+    FILAMENT_TEMP_SRC_AMBIENT,
+    FILAMENT_TEMP_SRC_FIXED,
+    FILAMENT_TEMP_SRC_SENSOR,
+)
 
 
 ######################################################################
@@ -358,13 +363,34 @@ class Heater:
                     "filament_diameter", above=0.0, default=1.75
                 )
                 temp_profile["filament_density"] = config_section.getfloat(
-                    "filament_density", above=0.0, default=0.0
+                    "filament_density", above=0.0, default=1.2
                 )
-                temp_profile[
-                    "filament_heat_capacity"
-                ] = config_section.getfloat(
-                    "filament_heat_capacity", above=0.0, default=0.0
+                temp_profile["filament_heat_capacity"] = (
+                    config_section.getfloat(
+                        "filament_heat_capacity", above=0.0, default=1.8
+                    )
                 )
+                temp_profile["maximum_retract"] = config_section.getfloat(
+                    "maximum_retract", above=0.0, default=2.0
+                )
+
+                filament_temp_src_raw = config_section.get(
+                    "filament_temperature_source", "ambient"
+                )
+                temp = filament_temp_src_raw.lower().strip()
+                if temp == "sensor":
+                    filament_temp_src = (FILAMENT_TEMP_SRC_SENSOR,)
+                elif temp == "ambient":
+                    filament_temp_src = (FILAMENT_TEMP_SRC_AMBIENT,)
+                else:
+                    try:
+                        value = float(temp)
+                    except ValueError:
+                        raise config_section.error(
+                            f"Unable to parse option 'filament_temperature_source' in section '{config_section.get_name()}'"
+                        )
+                    filament_temp_src = (FILAMENT_TEMP_SRC_FIXED, value)
+                temp_profile["filament_temp_src"] = filament_temp_src
 
                 ambient_sensor_name = config_section.get(
                     "ambient_temp_sensor", None
@@ -413,9 +439,9 @@ class Heater:
                     fan = fan_obj.fan
                 temp_profile["cooling_fan"] = fan
 
-                temp_profile[
-                    "fan_ambient_transfer"
-                ] = config_section.getfloatlist("fan_ambient_transfer", [])
+                temp_profile["fan_ambient_transfer"] = (
+                    config_section.getfloatlist("fan_ambient_transfer", [])
+                )
             elif control == "pid" or control == "pid_v":
                 for key, (type, placeholder) in PID_PROFILE_OPTIONS.items():
                     can_be_none = (

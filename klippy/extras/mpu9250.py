@@ -108,7 +108,7 @@ class MPU9250:
     def check_connected(self):
         if self.mcu.non_critical_disconnected:
             raise self.printer.command_error(
-                f"MPU: {self.name} could not connect cause mcu: {self.mcu.get_name()} is non_critical_disconnected!"
+                f"MPU: {self.name} could not connect because mcu: {self.mcu.get_name()} is non_critical_disconnected!"
             )
 
     def read_reg(self, reg):

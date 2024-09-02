@@ -58,6 +58,10 @@ serial:
 #   sending a Klipper command to the micro-controller so that it can
 #   reset itself. The default is 'arduino' if the micro-controller
 #   communicates over a serial port, 'command' otherwise.
+#is_non_critical: False
+#   Setting this to True will allow the mcu to be disconnected and 
+#   reconnected at will without errors. Helpful for USB-accelerometer boards
+#   and USB-probes
 ```
 
 ### [mcu my_extra_mcu]
@@ -935,7 +939,8 @@ The extruder section is used to describe the heater parameters for the
 nozzle hotend along with the stepper controlling the extruder. See the
 [command reference](G-Codes.md#extruder) for additional information.
 See the [pressure advance guide](Pressure_Advance.md) for information
-on tuning pressure advance.
+on tuning pressure advance. See [PID](PID.md) or [MPC](MPC.md) for more
+detailed information about the control methods.
 
 ```
 [extruder]
@@ -1022,12 +1027,14 @@ sensor_pin:
 #   be smoothed to reduce the impact of measurement noise. The default
 #   is 1 seconds.
 control:
-#   Control algorithm (either pid, pid_v or watermark). This parameter must
+#   Control algorithm (either pid, pid_v, watermark or mpc). This parameter must
 #   be provided. pid_v should only be used on well calibrated heaters with
 #   low to moderate noise.
-pid_Kp:
-pid_Ki:
-pid_Kd:
+#
+#   If control: pid or pid_v
+#pid_Kp:
+#pid_Ki:
+#pid_Kd:
 #   The proportional (pid_Kp), integral (pid_Ki), and derivative
 #   (pid_Kd) settings for the PID feedback control system. Klipper
 #   evaluates the PID settings with the following general formula:
@@ -1037,11 +1044,23 @@ pid_Kd:
 #   off and 1.0 being full on. Consider using the PID_CALIBRATE
 #   command to obtain these parameters. The pid_Kp, pid_Ki, and pid_Kd
 #   parameters must be provided for PID heaters.
+#
+#   If control: watermark
 #max_delta: 2.0
 #   On 'watermark' controlled heaters this is the number of degrees in
 #   Celsius above the target temperature before disabling the heater
 #   as well as the number of degrees below the target before
 #   re-enabling the heater. The default is 2 degrees Celsius.
+#
+#   If control: mpc
+#   See MPC.md for details about these parameters.
+#heater_power:
+#cooling_fan:
+#ambient_temp_sensor:
+#filament_diameter: 1.75
+#filament_density: 1.2
+#filament_heat_capacity: 1.8
+#
 #pwm_cycle_time: 0.100
 #   Time in seconds for each software PWM cycle of the heater. It is
 #   not recommended to set this unless there is an electrical
@@ -1363,6 +1382,15 @@ extended [G-Code command](G-Codes.md#z_tilt) becomes available.
 #horizontal_move_z: 5
 #   The height (in mm) that the head should be commanded to move to
 #   just prior to starting a probe operation. The default is 5.
+#min_horizontal_move_z: 1.0
+#   minimum value for horizontal move z 
+#   (only used when adaptive_horizontal_move_z is True)
+#adaptive_horizontal_move_z: False
+#   if we should adjust horizontal move z after the first adjustment round,
+#   based on error.
+#   when set to True, initial horizontal_move_z is the config value, 
+#   subsequent iterations will set horizontal_move_z to
+#   the ceil of error, or min_horizontal_move_z - whichever is greater.
 #retries: 0
 #   Number of times to retry if the probed points aren't within
 #   tolerance.
@@ -1376,6 +1404,7 @@ extended [G-Code command](G-Codes.md#z_tilt) becomes available.
 #increasing_threshold: 0.0000001
 #   Sets the threshold that probe points can increase before z_tilt aborts.
 #   To disable the validation, set this parameter to a high value.
+
 ```
 
 #### [z_tilt_ng]
@@ -1397,6 +1426,10 @@ extended [G-Code command](G-Codes.md#z_tilt) becomes available.
 #speed: 50
 # See [z_tilt]
 #horizontal_move_z: 5
+# See [z_tilt]
+#min_horizontal_move_z: 1.0
+# See [z_tilt]
+#adaptive_horizontal_move_z: False
 # See [z_tilt]
 #retries: 0
 # See [z_tilt]
@@ -1472,6 +1505,15 @@ Where x is the 0, 0 point on the bed
 #horizontal_move_z: 5
 #   The height (in mm) that the head should be commanded to move to
 #   just prior to starting a probe operation. The default is 5.
+#min_horizontal_move_z: 1.0
+#   minimum value for horizontal move z 
+#   (only used when adaptive_horizontal_move_z is True)
+#adaptive_horizontal_move_z: False
+#   if we should adjust horizontal move z after the first adjustment round,
+#   based on error.
+#   when set to True, initial horizontal_move_z is the config value, 
+#   subsequent iterations will set horizontal_move_z to
+#   the ceil of error, or min_horizontal_move_z - whichever is greater.
 #max_adjust: 4
 #   Safety limit if an adjustment greater than this value is requested
 #   quad_gantry_level will abort.
@@ -5186,6 +5228,9 @@ extruder_stepper_name:
 #   example, if the config section for the secondary extruder is
 #   [extruder_stepper my_extruder_stepper], this parameter's value
 #   would be 'my_extruder_stepper'.
+sensor_pin:
+#   Input pin connected to the sensor. This parameter must be
+#   provided.
 #multiplier_high: 1.05
 #   High multiplier to set for the secondary extruder when extruding
 #   forward and Belay is compressed or when extruding backward and
