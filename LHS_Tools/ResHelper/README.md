@@ -35,7 +35,7 @@ ResHelper is already included with this branch
 2. Install the following if you intend to **calculate damping** ratio:
 
 ```
-cd klipper/LHS_Tools/
+cd ~/klipper/LHS_Tools/ResHelper
 sudo apt install r-base
 sudo Rscript install_rs_lib.R
 ```

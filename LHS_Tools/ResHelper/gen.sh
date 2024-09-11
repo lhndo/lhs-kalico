@@ -1,38 +1,39 @@
 #!/bin/sh
-echo "\nResHelper: Generating Data...\n";
-name="shaper_calibrate_$1";
-[ ! -d $HOME"/printer_data/config/RES_DATA/" ] && mkdir ~/printer_data/config/RES_DATA;
 
-#graph generation
-#!/bin/bash
+# Define paths as variables
+RES_DATA_PATH="$HOME/printer_data/config/RES_DATA"
+DR_R_PATH="$HOME/klipper/LHS_Tools/ResHelper/DR.R"
+TMP_PATH="/tmp"
 
-# Check if the third argument is equal to 0 or 1
+echo "\nResHelper DK: Generating Data...\n"
+name="shaper_calibrate_$1"
+[ ! -d "$RES_DATA_PATH" ] && mkdir -p "$RES_DATA_PATH"
+
+# Graph generation
 if [ "$3" -eq 0 ]; then
     # Use default generation
-    echo "ResHelper: Starting DK Graph Generation...\n"
-    ~/klipper/scripts/calibrate_shaper.py /tmp/resonances_$1_*.csv -o ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png
+    echo "ResHelper DK: Starting DK Graph Generation...\n"
+    ~/klipper/scripts/calibrate_shaper.py "$TMP_PATH"/resonances_"$1"_*.csv -o "$RES_DATA_PATH"/shaper_calibrate_"$1".png
 elif [ "$3" -eq 1 ]; then
     # Classic klipper generation
-    echo "ResHelper: Starting Classic Klipper Graph Generation...\n"
-    ~/klipper/scripts/calibrate_shaper_classic.py /tmp/resonances_$1_*.csv -o ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png --shapers zv,mzv,ei --classic true
+    echo "ResHelper DK: Starting Classic Klipper Graph Generation...\n"
+    ~/klipper/scripts/calibrate_shaper_classic.py "$TMP_PATH"/resonances_"$1"_*.csv -o "$RES_DATA_PATH"/shaper_calibrate_"$1".png --shapers zv,mzv,ei --classic true
 else
     # Handle unexpected values of $3
     echo "Invalid value for third argument: $3. Expected 0 or 1."
     exit 1
 fi
 
-
-#damping ratio
+# Damping ratio
 if [ "$2" -eq 1 ]; then 
-	echo "ResHelper: Calculating damping ratio for $1"
-	dr="$(Rscript ~/ResHelper/DR.R)";
-	dr=${dr#"[1] "};
-	echo "ResHelper: Damping ratio for $1 calculated:\n damping_ratio_$1: $dr\n ";
+    echo "ResHelper DK: Calculating damping ratio for $1"
+    dr=$(Rscript "$DR_R_PATH")
+    dr=${dr#"[1] "}
+    echo "ResHelper DK: Damping ratio for $1 calculated:\n damping_ratio_$1: $dr\n "
 fi
 
-
-#cleanup
-name="$name-dr_$dr-v$(date "+%Y%m%d_%H%M").png";
-mv ~/printer_data/config/RES_DATA/shaper_calibrate_$1.png ~/printer_data/config/RES_DATA/$name;
-find '/tmp/' -name "resonances_*.csv" -print 2>/dev/null -exec rm {} \;
-echo "ResHelper: Finished\n"
+# Cleanup
+name="$name-dr_${dr:-NA}-v$(date "+%Y%m%d_%H%M").png"
+mv "$RES_DATA_PATH"/shaper_calibrate_"$1".png "$RES_DATA_PATH/$name"
+find "$TMP_PATH" -name "resonances_*.csv" -print 2>/dev/null -exec rm {} \;
+echo "ResHelper DK: Finished\n"
