@@ -170,6 +170,8 @@ If I want my printer to light itself on fire, I should be able to make my printe
 
 - [core: action_log](https://github.com/DangerKlippers/danger-klipper/pull/367)
 
+- [danger_options: configurable homing constants](https://github.com/DangerKlippers/danger-klipper/pull/378)
+
 If you're feeling adventurous, take a peek at the extra features in the bleeding-edge-v2 branch [feature documentation](docs/Bleeding_Edge.md)
 and [feature configuration reference](docs/Config_Reference_Bleeding_Edge.md):
 
@@ -211,21 +213,18 @@ sudo systemctl restart klipper
 
 ### Option 2. Using KIAUH
 
-For users that are not comfortable using Git directly, [KIAUH](https://github.com/dw-0/kiauh) is able to use custom repositories.
+For users that are not comfortable using Git directly, [KIAUH v6](https://github.com/dw-0/kiauh) is able to use custom repositories.
 
-To do this, add the Danger Klipper repo to KIAUH's repo list and run the script with the following commands:
+To do this, add the Danger Klipper repo to KIAUH's custom repository settings with the following steps:
 
-```bash
-echo "https://github.com/lhndo/danger-klipper/,bleeding-edge-v2" >> ~/kiauh/klipper_repos.txt
-~/kiauh/kiauh.sh
-```
 
 From the KIAUH menu select:
 
-- 6 ) Settings
-- 1 ) Set custom Klipper repository
-- Select the number corresponding to DangerKlipper from the list shown
-- Select 'Y' to confirm replacing your existing Klipper install
+- [S] Settings
+- 1\) Set custom Klipper repository
+- Use `https://github.com/lhndo/danger-klipper` as the new repository URL
+- Use `bleeding-edge-v2` as the new branch name
+- Select 'Y' to apply the changes
 - Enter 'B' for back twice
 - 'Q' to quit
 

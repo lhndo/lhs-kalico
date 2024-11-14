@@ -189,6 +189,7 @@ class VirtualSDGCodeProvider:
         self.file_position = 0
         self.file_size = fsize
         self.filename = filename
+        self.printer.send_event("virtual_sdcard:load_file")
 
     def get_file_position(self):
         return self.next_file_position
@@ -239,6 +240,7 @@ class VirtualSD:
         self.print_stats = self.printer.load_object(config, "print_stats")
         # sdcard state
         self.virtualsd_gcode_provider = VirtualSDGCodeProvider(config)
+        self.sdcard_dirname = self.virtualsd_gcode_provider.sdcard_dirname
         self.gcode_provider = None
         # Work timer
         self.reactor = self.printer.get_reactor()
