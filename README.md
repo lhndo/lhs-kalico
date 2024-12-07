@@ -1,3 +1,58 @@
+<p align="center">
+<a href="https://github.com/lhndo/LH-Stinger/"><img  src="https://github.com/lhndo/LH-Stinger/wiki/Images/LH_Stinger_Logo_512px.png" alt="Danger-Klipper Logo" width=200px></a>
+<a href="https://docs.kalico.gg"><img  src="docs/logo/kalico-big.png" width=250px alt="Kalico Logo"></a>
+</p>
+
+
+This branch follows the Kalico - Bleeding Edge V2 branch and includes quality of life additions for the LH Stinger.  
+*No MCU firmware flashing is required.*
+
+
+### Installation
+
+1. Back up current files:
+
+```bash
+mv ~/klipper ~/klipper_ml
+cp ~/printer_data/config/printer.cfg ~/printer_data/config/printer.cfg.ml 
+```
+
+2. Clone Danger Klipper repo and restart the klipper service:
+
+```bash
+git clone https://github.com/lhndo/danger-klipper.git ~/klipper
+cd klipper
+git checkout bleeding-edge-v2
+sudo systemctl restart klipper
+
+```
+
+3. Copy additional Kalico configuration files: 
+   *(this will not overwrite your printer.cfg)*
+
+```
+cp -rvi ~/klipper/LHS_Config/* ~/printer_data/config/
+
+```
+
+4. Port the differences from the provided **printer.cfg.dk_ref** to your **printer.cfg**
+
+<br>
+
+### Features
+
+- [LH Stinger Kalico Configuration](/LHS_Config) (set up for [MPC heater control](https://github.com/DangerKlippers/danger-klipper/blob/master/docs/MPC.md))
+- [Switch Klipper](/LHS_Tools/switch_klipper) (easy switching between Kalico and klipper mainline)
+
+
+
+
+<br>
+<br>
+<hr>
+<br>
+<br>
+
 <p align="center"><a href="https://docs.kalico.gg"><img align="center" src="docs/logo/kalico-big.png" alt="Kalico Logo"></a></p>
 
 [![Action Status](https://github.com/KalicoCrew/kalico/actions/workflows/ci-build_test.yaml/badge.svg?branch=main)](https://github.com/KalicoCrew/kalico/actions/workflows/ci-build_test.yaml)
