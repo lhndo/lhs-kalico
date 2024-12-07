@@ -33,6 +33,8 @@
 
 [include mymacros.cfg]   # Macros
 
+
+
 ###__________________  Kalico  ____________________
 
 [danger_options]
@@ -171,8 +173,8 @@ max_temp: 310
 min_extrude_temp: 170
 nozzle_diameter: 0.500
 filament_diameter: 1.750
-max_extrude_only_distance: 1000.0
-max_extrude_only_velocity: 80
+max_extrude_only_velocity: 120
+max_extrude_only_accel: 2800
 max_extrude_cross_section: 5
 instantaneous_corner_velocity: 5
 max_extrude_cross_section: 5
@@ -199,7 +201,7 @@ cooling_fan: fan
 smoothing: 0.6
 filament_density: 1.24
 filament_heat_capacity: 2.2
-#-----------------------------------
+#-------------------------------
 
 
 [heater_bed]
@@ -215,7 +217,7 @@ max_temp: 130
 heater_power: 156 # measured resistance at calibration temp  
 cooling_fan: fan
 smoothing: 0.83
-#-----------------------------------
+#------------------------------
 
 
 ###_______________  Fans  ___________________
@@ -243,7 +245,7 @@ pin:PD12
 cycle_time: 0.017
 hardware_pwm: False
 kick_start_time: 0.2
-off_below: 0.15
+min_power: 0.15
 
 [multi_pin ebox]
 pins: PD13
@@ -254,9 +256,9 @@ pin:multi_pin:ebox
 kick_start_time: 0.2
 stepper: stepper_y
 cycle_time: 0.01
-idle_timeout:30
-idle_speed:0.9
-off_below: 0.5
+idle_timeout: 30
+idle_speed: 1.0
+min_power: 0.5
 
 
 ###_______________  Temperature Sensors  ___________________
