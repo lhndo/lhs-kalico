@@ -21,10 +21,6 @@ cp ~/printer_data/config/printer.cfg ~/printer_data/config/printer.cfg.ml
 
 ```bash
 git clone https://github.com/lhndo/lhs-kalico ~/klipper
-cd klipper
-git checkout bleeding-edge-v2
-sudo systemctl restart klipper
-
 ```
 
 3. Copy the LHS Kalico configuration file reference: 
@@ -32,7 +28,7 @@ sudo systemctl restart klipper
 
 ```
 cp -rvi ~/klipper/LHS_Config/* ~/printer_data/config/
-
+sudo systemctl restart klipper
 ```
 
 4. Port the differences from the provided **printer.cfg.kalico_ref** to your **printer.cfg**
