@@ -13,7 +13,7 @@ ci_cache/
 _test_.*
 klippy/plugins/*
 !klippy/plugins/__init__.py
-!klippy/plugins/shaper_calibrate_classic.py
+!klippy/plugins/resonance_holder.py
 !klippy/plugins/xz_dockable_probe.py
 .vscode
 
