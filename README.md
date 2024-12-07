@@ -35,7 +35,7 @@ cp -rvi ~/klipper/LHS_Config/* ~/printer_data/config/
 
 ```
 
-4. Port the differences from the provided **printer.cfg.dk_ref** to your **printer.cfg**
+4. Port the differences from the provided **printer.cfg.kalico_ref** to your **printer.cfg**
 
 <br>
 
