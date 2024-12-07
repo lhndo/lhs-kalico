@@ -17,18 +17,18 @@ mv ~/klipper ~/klipper_ml
 cp ~/printer_data/config/printer.cfg ~/printer_data/config/printer.cfg.ml 
 ```
 
-2. Clone Danger Klipper repo and restart the klipper service:
+2. Clone the LHS Kalico repo and restart the Klipper service:
 
 ```bash
-git clone https://github.com/lhndo/danger-klipper.git ~/klipper
+git clone https://github.com/lhndo/lhs-kalico ~/klipper
 cd klipper
 git checkout bleeding-edge-v2
 sudo systemctl restart klipper
 
 ```
 
-3. Copy additional Kalico configuration files: 
-   *(this will not overwrite your printer.cfg)*
+3. Copy the LHS Kalico configuration file reference: 
+
 
 ```
 cp -rvi ~/klipper/LHS_Config/* ~/printer_data/config/
