@@ -173,9 +173,10 @@ max_temp: 310
 min_extrude_temp: 170
 nozzle_diameter: 0.500
 filament_diameter: 1.750
+max_extrude_cross_section: 5
+max_extrude_only_distance: 1000.0
 max_extrude_only_velocity: 120
 max_extrude_only_accel: 2800
-max_extrude_cross_section: 5
 instantaneous_corner_velocity: 5
 max_extrude_cross_section: 5
 pressure_advance: 0.02
@@ -207,10 +208,10 @@ filament_heat_capacity: 2.2
 [heater_bed]
 heater_pin: PA1
 sensor_pin: PF3 # TB
-sensor_type: ATC Semitec 104GT-2
+sensor_type: Generic 3950
 smooth_time: 1
 min_temp: 0
-max_temp: 130
+max_temp: 120
 
 # ----- MPC Configuration -----
 #control: mpc
