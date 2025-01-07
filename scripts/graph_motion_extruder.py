@@ -252,7 +252,7 @@ def calc_weighted4(positions, smooth_time):
     out = [0.0] * len(positions)
     for i in indexes(positions):
         weighted_data = [
-            positions[j] * ((offset**2 - (j - i) ** 2)) ** 2
+            positions[j] * (offset**2 - (j - i) ** 2) ** 2
             for j in range(i - offset, i + offset)
         ]
         out[i] = sum(weighted_data) * weight

@@ -4,7 +4,182 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import math, logging
-import stepper, chelper
+from klippy import stepper, chelper
+
+
+class ExtruderSmoother:
+    def __init__(self, config, pa_model):
+        self.smooth_time = config.getfloat(
+            "pressure_advance_smooth_time", 0.040, above=0.0, maxval=0.200
+        )
+        # A 4-th order smoothing function that goes to 0 together with
+        # its derivative at the ends of the smoothing interval
+        self.a = [15.0 / 8.0, 0.0, -15.0, 0.0, 30.0]
+        self.pa_model = pa_model
+        self.axes = ["x", "y", "z"]
+
+    def update(self, gcmd):
+        self.smooth_time = gcmd.get_float("SMOOTH_TIME", self.smooth_time)
+
+    def update_pa_model(self, pa_model):
+        self.pa_model = pa_model
+
+    def enable_axis(self, axis):
+        if axis not in self.axes:
+            self.axes.append(axis)
+
+    def disable_axis(self, axis):
+        if axis in self.axes:
+            self.axes.remove(axis)
+
+    def update_extruder_kinematics(self, extruder_sk):
+        ffi_main, ffi_lib = chelper.get_ffi()
+        n = len(self.a)
+        success = True
+        smooth_time = self.smooth_time if self.pa_model.enabled() else 0.0
+        for axis in self.axes:
+            if (
+                not ffi_lib.extruder_set_smoothing_params(
+                    extruder_sk, axis.encode(), n, self.a, smooth_time, 0.0
+                )
+                == 0
+            ):
+                success = False
+        return success
+
+    def get_status(self, eventtime):
+        return {"smooth_time": self.smooth_time}
+
+    def get_msg(self):
+        return "pressure_advance_smooth_time: %.6f" % (self.smooth_time,)
+
+
+class PALinearModel:
+    name = "linear"
+
+    def __init__(self, config=None):
+        if config:
+            self.pressure_advance = config.getfloat(
+                "pressure_advance", 0.0, minval=0.0
+            )
+        else:
+            self.pressure_advance = 0.0
+
+    def update(self, gcmd):
+        self.pressure_advance = gcmd.get_float(
+            "ADVANCE", self.pressure_advance, minval=0.0
+        )
+
+    def enabled(self):
+        return self.pressure_advance > 0.0
+
+    def get_pa_params(self):
+        return (self.pressure_advance,)
+
+    def get_status(self, eventtime):
+        return {"pressure_advance": self.pressure_advance}
+
+    def get_msg(self):
+        return "pressure_advance: %.6f" % (self.pressure_advance,)
+
+    def get_func(self):
+        ffi_main, ffi_lib = chelper.get_ffi()
+        return ffi_lib.pressure_advance_linear_model_func
+
+
+class PANonLinearModel:
+    def __init__(self, config=None):
+        if config:
+            self.linear_advance = config.getfloat(
+                "linear_advance", 0.0, minval=0.0
+            )
+            self.linear_offset = config.getfloat(
+                "linear_offset", 0.0, minval=0.0
+            )
+            if self.linear_offset:
+                self.linearization_velocity = config.getfloat(
+                    "linearization_velocity", above=0.0
+                )
+            else:
+                self.linearization_velocity = config.getfloat(
+                    "linearization_velocity", 0.0, minval=0.0
+                )
+        else:
+            self.linear_advance = 0.0
+            self.linear_offset = 0.0
+            self.linearization_velocity = 0.0
+
+    def update(self, gcmd):
+        self.linear_advance = gcmd.get_float(
+            "ADVANCE", self.linear_advance, minval=0.0
+        )
+        self.linear_offset = gcmd.get_float(
+            "OFFSET", self.linear_offset, minval=0.0
+        )
+        self.linearization_velocity = gcmd.get_float(
+            "VELOCITY", self.linearization_velocity
+        )
+        if self.linear_offset and self.linearization_velocity <= 0.0:
+            raise gcmd.error(
+                "VELOCITY must be set to a positive value "
+                "when OFFSET is non-zero"
+            )
+
+    def enabled(self):
+        return self.linear_advance > 0.0 or self.linear_offset > 0.0
+
+    def get_pa_params(self):
+        # The order must match the order of parameters in the
+        # pressure_advance_params struct in kin_extruder.c
+        return (
+            self.linear_advance,
+            self.linear_offset,
+            self.linearization_velocity,
+        )
+
+    def get_status(self, eventtime):
+        return {
+            "linear_advance": self.linear_advance,
+            "linear_offset": self.linear_offset,
+            "linearization_velocity": self.linearization_velocity,
+        }
+
+    def get_msg(self):
+        return (
+            "linear_advance: %.6f\n"
+            "linear_offset: %.6f\n"
+            "linearization_velocity: %.6f"
+            % (
+                self.linear_advance,
+                self.linear_offset,
+                self.linearization_velocity,
+            )
+        )
+
+    def get_func(self):
+        return None
+
+
+class PATanhModel(PANonLinearModel):
+    name = "tanh"
+
+    def __init__(self, config=None):
+        PANonLinearModel.__init__(self, config)
+
+    def get_func(self):
+        ffi_main, ffi_lib = chelper.get_ffi()
+        return ffi_lib.pressure_advance_tanh_model_func
+
+
+class PAReciprModel(PANonLinearModel):
+    name = "recipr"
+
+    def __init__(self, config=None):
+        PANonLinearModel.__init__(self, config)
+
+    def get_func(self):
+        ffi_main, ffi_lib = chelper.get_ffi()
+        return ffi_lib.pressure_advance_recipr_model_func
 
 
 class ExtruderSmoother:

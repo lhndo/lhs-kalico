@@ -4,7 +4,7 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import os, re, logging, collections, shlex
-import mathutil
+from . import mathutil
 
 
 class CommandError(Exception):
@@ -168,6 +168,7 @@ class GCodeDispatch:
             "STATUS",
             "HELP",
             "HEATER_INTERRUPT",
+            "LOG_ROLLOVER",
         ]
         for cmd in handlers:
             func = getattr(self, "cmd_" + cmd)
@@ -495,6 +496,9 @@ class GCodeDispatch:
 
     def cmd_HEATER_INTERRUPT(self, gcmd):
         self.increment_interrupt_counter()
+
+    def cmd_LOG_ROLLOVER(self, gcmd):
+        self.printer.bglogger.doRollover()
 
 
 # Support reading gcode from a pseudo-tty interface

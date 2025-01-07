@@ -3,8 +3,10 @@
 # Copyright (C) 2016-2021  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import math, collections
-import chelper, msgproto
+import collections
+import math
+from . import chelper
+from . import msgproto
 
 
 class error(Exception):
