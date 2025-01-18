@@ -1,3 +1,7 @@
+# This branch is not active anymore
+Please use this instead: https://github.com/lhndo/lhs-kalico-addins
+
+
 <p align="center">
 <a href="https://github.com/lhndo/LH-Stinger/"><img  src="https://github.com/lhndo/LH-Stinger/wiki/Images/LH_Stinger_Logo_512px.png" alt="Danger-Klipper Logo" width=200px></a>
 <a href="https://docs.kalico.gg"><img  src="docs/logo/kalico-big.png" width=250px alt="Kalico Logo"></a>
